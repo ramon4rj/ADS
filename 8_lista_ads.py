@@ -1,17 +1,16 @@
-#algoritmo para gerar variáveis aleatórias segundo uma distribuição
-#uniforme, usando o método da transformação inversa, aula10.pdf / Página 15
-# x = a + (b-a)u
-# u = número aleatório
-# a e b = intervalo ([a,b]). Nesse caso [10,20]
-# x = variável aleatória
-# - Gerar u e calcular x
-#
-#Quantidade de valores esperadas para cada intervalo [a,b] = 100. Mas a quantidade
-#observada pode ser diferente.
 
-import random
+#Método para gerar u = (125 *(xn-1) + 1) mod (2^12)
 
+#Método da transformação inversa : x = a + (b-a)*u onde f será o x obtido 
+#f = a + (b-a)*u
+#a = 10
+#b = 20 
+#u = resultado da função geradora u
+
+#listas utilizadas
 lista = []
+lista2 = []
+lista3 = []
 intervalo1 = []
 intervalo2 = []
 intervalo3 = []
@@ -23,101 +22,105 @@ intervalo8 = []
 intervalo9 = []
 intervalo10 = []
 
-class Metodo:
+x = 27
+for i in range(1000):
+    u = ((125*(x) + 1) % (2**12))
+    x = u 
+    ri = u / (2**12)  # Ri = Xn / m  (Relação usada p/ transformar inteiros obtidos de u em números aleatórios)
+    f = 10 + (20-10)*ri
 
-    def function(self, a, b, u):
-            #print("u: ")
-            #print(u)
-            self.a = a
-            self.b = b
-            self.u = u
-            self.x = a + (b-a)*u 
-            #print("x: ")
-            #print(x)
-            #lista.append(x)
+    if f >= 10 and f <= 11:
+        intervalo1.append(f)
+    if f >= 11 and f <= 12:
+        intervalo2.append(f)
+    if f >= 12 and f <= 13:
+        intervalo3.append(f)
+    if f >= 13 and f <= 14:
+        intervalo4.append(f)
+    if f >= 14 and f <= 15:
+        intervalo5.append(f)
+    if f >= 15 and f <= 16:
+        intervalo6.append(f)
+    if f >= 16 and f <= 17:
+        intervalo7.append(f)
+    if f >= 17 and f <= 18:
+        intervalo8.append(f)
+    if f >= 18 and f <= 19:
+        intervalo9.append(f)
+    if f >= 19 and f <= 20:
+        intervalo10.append(f)
+    
+    lista.append(f)
+        
 
-    def processo(self):
-
-        for i in range(1000):
-            # Método no intervalo fixo
-
-            u = random.randint(10,20)
-            self.function(10, 20, u)
-            lista.append(self.x)
-
-            # Método nos intervalos separados
-            #usar a função len como contador
-            self.cont1 = 0
-            self.function(10, 11, u)
-            intervalo1.append(self.x)
-            self.cont1 += 1
-
-            self.cont2 = 0
-            self.function(11, 12, u)
-            intervalo2.append(self.x)
-            self.cont2 += 1
-
-            self.cont3 = 0
-            self.function(12, 13, u)
-            intervalo3.append(self.x)
-            self.cont3 += 1
-
-            self.cont4 = 0
-            self.function(13, 14, u)
-            intervalo4.append(self.x)
-            self.cont4 += 1
-
-            self.cont5 = 0
-            self.function(14, 15, u)
-            intervalo5.append(self.x)
-            self.cont5 += 1
-
-            self.cont6 = 0
-            self.function(15, 16, u)
-            intervalo6.append(self.x)
-            self.cont6 += 1
-
-            self.cont7 = 0
-            self.function(16, 17, u)
-            intervalo7.append(self.x)
-            self.cont7 += 1
-
-            self.cont8 = 0
-            self.function(17, 18, u)
-            intervalo8.append(self.x)
-            self.cont8 += 1
-
-            self.cont9 = 0
-            self.function(18, 19, u)
-            intervalo9.append(self.x)
-            self.cont9 += 1
-
-            self.cont10 = 0
-            self.function(19, 20, u)
-            intervalo10.append(self.x)
-            self.cont10 += 1
+#lista2 será usada p/ guardar os numeros observados em cada intervalo 
+lista2.append(len(intervalo1))
+lista2.append(len(intervalo2))
+lista2.append(len(intervalo3))
+lista2.append(len(intervalo4))
+lista2.append(len(intervalo5))
+lista2.append(len(intervalo6))
+lista2.append(len(intervalo7))
+lista2.append(len(intervalo8))
+lista2.append(len(intervalo9))
+lista2.append(len(intervalo10))
 
 
-    def quiquadrado(self, cont, ei):
-        #( (quantidade observada - quantidade esperada)^2 / quantidade esperada )
-        qui = ( (self.cont1 - ei)**2 / ei )
+esperados = 100
+#lista3 será usada p/ armazenar os erros calculados
+#erro D = ( (observados - esperados)^2 / esperados )
+for i in range(10):
+    d = ( (lista2[i] - esperados)**2 / 100 )
+    lista3.append(d)
 
-    def chamaqui(self, cont):
-        self.quiquadrado(self.cont1)
+#Soma os valores observados 
+tot_obs = 0
+for numero in lista2:
+    tot_obs += numero
+    
+#Soma os valores calculados do erro d
+tot_erro = 0 
+for valor in lista3:
+    tot_erro += valor
 
 
+#Listas p/ imprimir tabela
+tabela_nomes = ["Intervalos", "Observados", "Erro D    "]
+tabela1 = [len(intervalo1), "             100           ", lista3[0] ]
+tabela2 = [len(intervalo2), "             100            ", lista3[1] ]
+tabela3 = [len(intervalo3), "              100           ", lista3[2] ]
+tabela4 = [len(intervalo4), "              100           ", lista3[3] ]
+tabela5 = [len(intervalo5), "             100           ", lista3[4] ]
+tabela6 = [len(intervalo6), "              100           ", lista3[5] ]
+tabela7 = [len(intervalo7), "              100           ", lista3[6] ]
+tabela8 = [len(intervalo8), "              100           ", lista3[7] ]
+tabela9 = [len(intervalo9), "             100            ", lista3[8] ]
+tabela10 = [len(intervalo10), "             100            ", lista3[9] ]
+tabela_total = [tot_obs, "            100          ", tot_erro]
 
-a = Metodo()
-a.processo()
-print(lista)
+    
+
+
+#print(lista)  #mostra todos os numeros gerados
+#print(len(lista)) #mostra o total de numeros gerados
+#print(lista2) #mostra os numeros observados p/ cada intervalo
+#print(lista3) #Mostra os erros obtidos
+
+print(tabela_nomes)
+print(tabela1)
+print(tabela2)
+print(tabela3) 
+print(tabela4) 
+print(tabela5)
+print(tabela6)
+print(tabela7) 
+print(tabela8) 
+print(tabela9) 
+print(tabela10)
+print("Resultados totais")
+print(tabela_total)
+
 print(" ")
-print(" ")
-print("divisao")
-print(" ")
-print(" ")
-print(intervalo1)
-#print(intervalo2)
-#a.quiquadrado(cont1, 100)
-#a.chamaqui(cont1)
-print(len(intervalo1))
-print(len(intervalo2))
+print("D = {} < χ2(0,8; 9) = 12,242 ".format(tot_erro))
+print("Portanto, É um bom algoritmo")
+
